@@ -1,0 +1,28 @@
+.container{
+    display:'flex';
+    padding:10px;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: skyblue;
+}
+
+.link{
+    margin-left: 50px;
+    cursor: pointer
+}
+.activeLink{
+    margin-left: 50px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.input{
+    width: 50%;
+    padding: 12px 20px;
+    margin-left: 150px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  

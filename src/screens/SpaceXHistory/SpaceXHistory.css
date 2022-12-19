@@ -1,0 +1,15 @@
+.box{
+    /* display: flex; */
+    width: 80%;
+    margin: auto;
+    /* flex-direction: column; */
+}
+
+.card{
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #b3e3ff;
+    margin: 20px;
+    
+}
