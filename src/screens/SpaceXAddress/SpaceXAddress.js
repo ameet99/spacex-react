@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ReactPaginate from 'react-paginate';
 import { storeAddress } from '../../redux';
 import '../SpaceXHistory/SpaceXHistory.css';
+
+const itemsPerPage = 10;
 
 export const SpaceXAddress = () => {
 	const spaceAddData = useSelector(state => state.spaceXRed.addressData)
@@ -9,6 +12,7 @@ export const SpaceXAddress = () => {
 
 	const dispatch = useDispatch();
 	const [data, setData] = useState([]);
+	const [itemOffset, setItemOffset] = useState(0);
 
 	useEffect(() => {
 		if (!spaceAddData.length) {
@@ -37,16 +41,46 @@ export const SpaceXAddress = () => {
 		})
 		setData(filterData)
 	}, [searchTxt])
+
+	const endOffset = itemOffset + itemsPerPage;
+	const currentItems = data.slice(itemOffset, endOffset);
+	const pageCount = Math.ceil(data.length / itemsPerPage);
+
+	const handlePageClick = (event) => {
+		const newOffset = (event.selected * itemsPerPage) % data.length;
+		setItemOffset(newOffset);
+	};
+
 	return (
 		<div className='box'>
-			{data.map((item, index) => (
-				<div key={`address-${index}`} className='card'>
-					<h3>Payload Id: {item.payload_id} </h3>
-					<h3>Nationality: {item.nationality} </h3>
-					<h3>Manufacturer: {item.manufacturer} </h3>
-					<h3>Payload Type: {item.payload_type} </h3>
-				</div>
-			))}
+			<DisplayData currentItem={currentItems} />
+			<div className='pagination'>
+				<ReactPaginate
+					breakLabel="..."
+					nextLabel="next >"
+					onPageChange={handlePageClick}
+					pageRangeDisplayed={5}
+					pageCount={pageCount}
+					previousLabel="< previous"
+					renderOnZeroPageCount={null}
+					itemClass="page-item"
+					linkClass="page-link"
+				/>
+			</div>
 		</div>
 	)
-}
+};
+
+const DisplayData = (props) => (
+	<>
+		{props.currentItem?.map((item, index) => (
+			<div key={`address-${index}`} className='card'>
+				<h3>Payload Id: {item.payload_id} </h3>
+				<h3>Nationality: {item.nationality} </h3>
+				<h3>Manufacturer: {item.manufacturer} </h3>
+				<h3>Payload Type: {item.payload_type} </h3>
+			</div>
+		))}
+	</>
+);
+
